@@ -999,18 +999,13 @@ ngx_rtmp_relay_send_publish(ngx_rtmp_session_t *s)
     if (ctx->play_path.len) {
         out_elts[3].data = ctx->play_path.data;
         out_elts[3].len  = ctx->play_path.len;
-    } else if(ngx_strncmp(ctx->app.data,"alilive",7) == 0){
+    } else {
         u_char  *p;
-        ngx_log_error(NGX_LOG_INFO,s->connection->log,0,"relay: Alilive found ,app name is %s", ctx->app);
         p = ngx_snprintf(name_with_vhost, NGX_RTMP_MAX_NAME, "%s?vhost=live.renrenjiang.cn",ctx->name.data); 
         name_with_vhost_len = p - name_with_vhost;
         *p = 0;
         out_elts[3].data = name_with_vhost;
         out_elts[3].len  = name_with_vhost_len;
-    } else {
-        ngx_log_error(NGX_LOG_INFO,s->connection->log,0,"relay: app name is %s", ctx->app);
-        out_elts[3].data = ctx->name.data;
-        out_elts[3].len  = ctx->name.len;
     }
 
     ngx_memzero(&h, sizeof(h));
